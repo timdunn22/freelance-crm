@@ -1,0 +1,66 @@
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY) /*application='FreelanceCrm'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='FreelanceCrm'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='FreelanceCrm'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.4ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2026-01-13 20:41:43.117085', '2026-01-13 20:41:43.117087') RETURNING "key" /*application='FreelanceCrm'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='FreelanceCrm'*/[0m
+Migrating to CreateUsers (20260113204059)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='FreelanceCrm'*/[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar, "password_digest" varchar, "name" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='FreelanceCrm'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email") /*application='FreelanceCrm'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260113204059') RETURNING "version" /*application='FreelanceCrm'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='FreelanceCrm'*/[0m
+Migrating to CreateLeads (20260113204107)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='FreelanceCrm'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "leads" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "name" varchar, "email" varchar, "company" varchar, "status" varchar, "notes" text, "phone" varchar, "website" varchar, "estimated_value" decimal, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_1d08b36969"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='FreelanceCrm'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_leads_on_user_id" ON "leads" ("user_id") /*application='FreelanceCrm'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_leads_on_status" ON "leads" ("status") /*application='FreelanceCrm'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260113204107') RETURNING "version" /*application='FreelanceCrm'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='FreelanceCrm'*/[0m
+Migrating to CreateInteractions (20260113204114)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='FreelanceCrm'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "interactions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "lead_id" integer NOT NULL, "interaction_type" varchar, "notes" text, "interaction_date" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_39404310dd"
+FOREIGN KEY ("lead_id")
+  REFERENCES "leads" ("id")
+) /*application='FreelanceCrm'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_interactions_on_lead_id" ON "interactions" ("lead_id") /*application='FreelanceCrm'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260113204114') RETURNING "version" /*application='FreelanceCrm'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='FreelanceCrm'*/[0m
+Migrating to CreateTasks (20260113204121)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='FreelanceCrm'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "tasks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "lead_id" integer NOT NULL, "title" varchar, "description" text, "due_date" datetime(6), "completed" boolean, "priority" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_4d2a9e4d7e"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_ec34c29a53"
+FOREIGN KEY ("lead_id")
+  REFERENCES "leads" ("id")
+) /*application='FreelanceCrm'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_tasks_on_user_id" ON "tasks" ("user_id") /*application='FreelanceCrm'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_tasks_on_lead_id" ON "tasks" ("lead_id") /*application='FreelanceCrm'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260113204121') RETURNING "version" /*application='FreelanceCrm'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='FreelanceCrm'*/[0m
+Migrating to CreateTags (20260113204128)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='FreelanceCrm'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "color" varchar, "user_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_e689f6d0cc"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='FreelanceCrm'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_tags_on_user_id" ON "tags" ("user_id") /*application='FreelanceCrm'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260113204128') RETURNING "version" /*application='FreelanceCrm'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='FreelanceCrm'*/[0m
+Migrating to CreateLeadTags (20260113204136)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='FreelanceCrm'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "lead_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "lead_id" integer NOT NULL, "tag_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_ff5fb44bcb"
+FOREIGN KEY ("lead_id")
+  REFERENCES "leads" ("id")
+, CONSTRAINT "fk_rails_c26d137616"
+FOREIGN KEY ("tag_id")
+  REFERENCES "tags" ("id")
+) /*application='FreelanceCrm'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_lead_tags_on_lead_id" ON "lead_tags" ("lead_id") /*application='FreelanceCrm'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_lead_tags_on_tag_id" ON "lead_tags" ("tag_id") /*application='FreelanceCrm'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260113204136') RETURNING "version" /*application='FreelanceCrm'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='FreelanceCrm'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='FreelanceCrm'*/[0m

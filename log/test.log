@@ -1,0 +1,370 @@
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "interactions"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "interactions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "interaction_date" datetime(6), "interaction_type" varchar, "lead_id" integer NOT NULL, "notes" text, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_interactions_on_lead_id" ON "interactions" ("lead_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "lead_tags"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "lead_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "lead_id" integer NOT NULL, "tag_id" integer NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_lead_tags_on_lead_id" ON "lead_tags" ("lead_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_lead_tags_on_tag_id" ON "lead_tags" ("tag_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "leads"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "leads" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "company" varchar, "created_at" datetime(6) NOT NULL, "email" varchar, "estimated_value" decimal, "name" varchar, "notes" text, "phone" varchar, "status" varchar, "updated_at" datetime(6) NOT NULL, "user_id" integer NOT NULL, "website" varchar)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_leads_on_status" ON "leads" ("status")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_leads_on_user_id" ON "leads" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "tags"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "color" varchar, "created_at" datetime(6) NOT NULL, "name" varchar, "updated_at" datetime(6) NOT NULL, "user_id" integer NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_tags_on_user_id" ON "tags" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "tasks"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "tasks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "completed" boolean, "created_at" datetime(6) NOT NULL, "description" text, "due_date" datetime(6), "lead_id" integer NOT NULL, "priority" varchar, "title" varchar, "updated_at" datetime(6) NOT NULL, "user_id" integer NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_tasks_on_lead_id" ON "tasks" ("lead_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_tasks_on_user_id" ON "tasks" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "email" varchar, "name" varchar, "password_digest" varchar, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "ainteractions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "interaction_date" datetime(6), "interaction_type" varchar, "lead_id" integer NOT NULL, "notes" text, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_ainteractions_on_lead_id" ON "ainteractions" ("lead_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "ainteractions" ("id","created_at","interaction_date","interaction_type","lead_id","notes","updated_at")
+                     SELECT "id","created_at","interaction_date","interaction_type","lead_id","notes","updated_at" FROM "interactions"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "interactions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "interactions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "interaction_date" datetime(6), "interaction_type" varchar, "lead_id" integer NOT NULL, "notes" text, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_39404310dd"
+FOREIGN KEY ("lead_id")
+  REFERENCES "leads" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_interactions_on_lead_id" ON "interactions" ("lead_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "interactions" ("id","created_at","interaction_date","interaction_type","lead_id","notes","updated_at")
+                     SELECT "id","created_at","interaction_date","interaction_type","lead_id","notes","updated_at" FROM "ainteractions"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "ainteractions"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "alead_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "lead_id" integer NOT NULL, "tag_id" integer NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_alead_tags_on_tag_id" ON "alead_tags" ("tag_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_alead_tags_on_lead_id" ON "alead_tags" ("lead_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "alead_tags" ("id","created_at","lead_id","tag_id","updated_at")
+                     SELECT "id","created_at","lead_id","tag_id","updated_at" FROM "lead_tags"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "lead_tags"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "lead_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "lead_id" integer NOT NULL, "tag_id" integer NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_ff5fb44bcb"
+FOREIGN KEY ("lead_id")
+  REFERENCES "leads" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_lead_tags_on_lead_id" ON "lead_tags" ("lead_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_lead_tags_on_tag_id" ON "lead_tags" ("tag_id")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "lead_tags" ("id","created_at","lead_id","tag_id","updated_at")
+                     SELECT "id","created_at","lead_id","tag_id","updated_at" FROM "alead_tags"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "alead_tags"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "alead_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "lead_id" integer NOT NULL, "tag_id" integer NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_alead_tags_on_tag_id" ON "alead_tags" ("tag_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_alead_tags_on_lead_id" ON "alead_tags" ("lead_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "alead_tags" ("id","created_at","lead_id","tag_id","updated_at")
+                     SELECT "id","created_at","lead_id","tag_id","updated_at" FROM "lead_tags"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "lead_tags"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "lead_tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "lead_id" integer NOT NULL, "tag_id" integer NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_ff5fb44bcb"
+FOREIGN KEY ("lead_id")
+  REFERENCES "leads" ("id")
+, CONSTRAINT "fk_rails_c26d137616"
+FOREIGN KEY ("tag_id")
+  REFERENCES "tags" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_lead_tags_on_lead_id" ON "lead_tags" ("lead_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_lead_tags_on_tag_id" ON "lead_tags" ("tag_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "lead_tags" ("id","created_at","lead_id","tag_id","updated_at")
+                     SELECT "id","created_at","lead_id","tag_id","updated_at" FROM "alead_tags"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "alead_tags"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aleads" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "company" varchar, "created_at" datetime(6) NOT NULL, "email" varchar, "estimated_value" decimal, "name" varchar, "notes" text, "phone" varchar, "status" varchar, "updated_at" datetime(6) NOT NULL, "user_id" integer NOT NULL, "website" varchar)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aleads_on_user_id" ON "aleads" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aleads_on_status" ON "aleads" ("status")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "aleads" ("id","company","created_at","email","estimated_value","name","notes","phone","status","updated_at","user_id","website")
+                     SELECT "id","company","created_at","email","estimated_value","name","notes","phone","status","updated_at","user_id","website" FROM "leads"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "leads"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "leads" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "company" varchar, "created_at" datetime(6) NOT NULL, "email" varchar, "estimated_value" decimal, "name" varchar, "notes" text, "phone" varchar, "status" varchar, "updated_at" datetime(6) NOT NULL, "user_id" integer NOT NULL, "website" varchar, CONSTRAINT "fk_rails_1d08b36969"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_leads_on_status" ON "leads" ("status")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_leads_on_user_id" ON "leads" ("user_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "leads" ("id","company","created_at","email","estimated_value","name","notes","phone","status","updated_at","user_id","website")
+                     SELECT "id","company","created_at","email","estimated_value","name","notes","phone","status","updated_at","user_id","website" FROM "aleads"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "aleads"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "atags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "color" varchar, "created_at" datetime(6) NOT NULL, "name" varchar, "updated_at" datetime(6) NOT NULL, "user_id" integer NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_atags_on_user_id" ON "atags" ("user_id")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "atags" ("id","color","created_at","name","updated_at","user_id")
+                     SELECT "id","color","created_at","name","updated_at","user_id" FROM "tags"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "tags"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "tags" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "color" varchar, "created_at" datetime(6) NOT NULL, "name" varchar, "updated_at" datetime(6) NOT NULL, "user_id" integer NOT NULL, CONSTRAINT "fk_rails_e689f6d0cc"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_tags_on_user_id" ON "tags" ("user_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "tags" ("id","color","created_at","name","updated_at","user_id")
+                     SELECT "id","color","created_at","name","updated_at","user_id" FROM "atags"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "atags"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "atasks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "completed" boolean, "created_at" datetime(6) NOT NULL, "description" text, "due_date" datetime(6), "lead_id" integer NOT NULL, "priority" varchar, "title" varchar, "updated_at" datetime(6) NOT NULL, "user_id" integer NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_atasks_on_user_id" ON "atasks" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_atasks_on_lead_id" ON "atasks" ("lead_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "atasks" ("id","completed","created_at","description","due_date","lead_id","priority","title","updated_at","user_id")
+                     SELECT "id","completed","created_at","description","due_date","lead_id","priority","title","updated_at","user_id" FROM "tasks"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "tasks"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "tasks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "completed" boolean, "created_at" datetime(6) NOT NULL, "description" text, "due_date" datetime(6), "lead_id" integer NOT NULL, "priority" varchar, "title" varchar, "updated_at" datetime(6) NOT NULL, "user_id" integer NOT NULL, CONSTRAINT "fk_rails_ec34c29a53"
+FOREIGN KEY ("lead_id")
+  REFERENCES "leads" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_tasks_on_lead_id" ON "tasks" ("lead_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_tasks_on_user_id" ON "tasks" ("user_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "tasks" ("id","completed","created_at","description","due_date","lead_id","priority","title","updated_at","user_id")
+                     SELECT "id","completed","created_at","description","due_date","lead_id","priority","title","updated_at","user_id" FROM "atasks"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "atasks"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "atasks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "completed" boolean, "created_at" datetime(6) NOT NULL, "description" text, "due_date" datetime(6), "lead_id" integer NOT NULL, "priority" varchar, "title" varchar, "updated_at" datetime(6) NOT NULL, "user_id" integer NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_atasks_on_user_id" ON "atasks" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_atasks_on_lead_id" ON "atasks" ("lead_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "atasks" ("id","completed","created_at","description","due_date","lead_id","priority","title","updated_at","user_id")
+                     SELECT "id","completed","created_at","description","due_date","lead_id","priority","title","updated_at","user_id" FROM "tasks"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "tasks"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "tasks" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "completed" boolean, "created_at" datetime(6) NOT NULL, "description" text, "due_date" datetime(6), "lead_id" integer NOT NULL, "priority" varchar, "title" varchar, "updated_at" datetime(6) NOT NULL, "user_id" integer NOT NULL, CONSTRAINT "fk_rails_ec34c29a53"
+FOREIGN KEY ("lead_id")
+  REFERENCES "leads" ("id")
+, CONSTRAINT "fk_rails_4d2a9e4d7e"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_tasks_on_lead_id" ON "tasks" ("lead_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_tasks_on_user_id" ON "tasks" ("user_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "tasks" ("id","completed","created_at","description","due_date","lead_id","priority","title","updated_at","user_id")
+                     SELECT "id","completed","created_at","description","due_date","lead_id","priority","title","updated_at","user_id" FROM "atasks"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "atasks"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20260113204136)[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20260113204128),
+(20260113204121),
+(20260113204114),
+(20260113204107),
+(20260113204059);[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'test', '2026-01-13 20:48:04.157208', '2026-01-13 20:48:04.157209') RETURNING "key"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', 'c801199801f4f989fe8a1f9ff681417bda3d21f9', '2026-01-13 20:48:04.157675', '2026-01-13 20:48:04.157676') RETURNING "key"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "email", "name", "password_digest", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["created_at", "2026-01-13 20:48:05.119417"], ["email", "[FILTERED]"], ["name", "Test User"], ["password_digest", "[FILTERED]"], ["updated_at", "2026-01-13 20:48:05.119417"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mLead Create (0.2ms)[0m  [1m[32mINSERT INTO "leads" ("company", "created_at", "email", "estimated_value", "name", "notes", "phone", "status", "updated_at", "user_id", "website") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["company", "Acme Corp"], ["created_at", "2026-01-13 20:48:05.130698"], ["email", "[FILTERED]"], ["estimated_value", 5000.0], ["name", "Lead 1"], ["notes", "Some notes"], ["phone", "555-1234"], ["status", "new"], ["updated_at", "2026-01-13 20:48:05.130698"], ["user_id", 1], ["website", "https://example.com"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mLead Create (0.1ms)[0m  [1m[32mINSERT INTO "leads" ("company", "created_at", "email", "estimated_value", "name", "notes", "phone", "status", "updated_at", "user_id", "website") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["company", "Acme Corp"], ["created_at", "2026-01-13 20:48:05.131682"], ["email", "[FILTERED]"], ["estimated_value", 5000.0], ["name", "Lead 2"], ["notes", "Some notes"], ["phone", "555-1234"], ["status", "new"], ["updated_at", "2026-01-13 20:48:05.131682"], ["user_id", 1], ["website", "https://example.com"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mLead Create (0.1ms)[0m  [1m[32mINSERT INTO "leads" ("company", "created_at", "email", "estimated_value", "name", "notes", "phone", "status", "updated_at", "user_id", "website") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["company", "Acme Corp"], ["created_at", "2026-01-13 20:48:05.132268"], ["email", "[FILTERED]"], ["estimated_value", 5000.0], ["name", "Lead 3"], ["notes", "Some notes"], ["phone", "555-1234"], ["status", "new"], ["updated_at", "2026-01-13 20:48:05.132268"], ["user_id", 1], ["website", "https://example.com"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Started GET "/leads" for 127.0.0.1 at 2026-01-13 12:48:05 -0800
+Processing by LeadsController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mLead Load (0.1ms)[0m  [1m[34mSELECT "leads".* FROM "leads" WHERE "leads"."user_id" = ?[0m  [["user_id", 1]]
+  [1m[36mLeadTag Load (0.1ms)[0m  [1m[34mSELECT "lead_tags".* FROM "lead_tags" WHERE "lead_tags"."lead_id" IN (?, ?, ?)[0m  [["lead_id", 1], ["lead_id", 2], ["lead_id", 3]]
+  [1m[36mInteraction Load (0.0ms)[0m  [1m[34mSELECT "interactions".* FROM "interactions" WHERE "interactions"."lead_id" IN (?, ?, ?)[0m  [["lead_id", 1], ["lead_id", 2], ["lead_id", 3]]
+  [1m[36mInteraction Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "interactions" WHERE "interactions"."lead_id" = ?[0m  [["lead_id", 1]]
+  [1m[36mInteraction Load (0.0ms)[0m  [1m[34mSELECT "interactions".* FROM "interactions" WHERE "interactions"."lead_id" = ? ORDER BY "interactions"."interaction_date" DESC LIMIT ?[0m  [["lead_id", 1], ["LIMIT", 1]]
+  [1m[36mInteraction Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "interactions" WHERE "interactions"."lead_id" = ?[0m  [["lead_id", 2]]
+  [1m[36mInteraction Load (0.0ms)[0m  [1m[34mSELECT "interactions".* FROM "interactions" WHERE "interactions"."lead_id" = ? ORDER BY "interactions"."interaction_date" DESC LIMIT ?[0m  [["lead_id", 2], ["LIMIT", 1]]
+  [1m[36mInteraction Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "interactions" WHERE "interactions"."lead_id" = ?[0m  [["lead_id", 3]]
+  [1m[36mInteraction Load (0.0ms)[0m  [1m[34mSELECT "interactions".* FROM "interactions" WHERE "interactions"."lead_id" = ? ORDER BY "interactions"."interaction_date" DESC LIMIT ?[0m  [["lead_id", 3], ["LIMIT", 1]]
+Completed 200 OK in 54ms (Views: 0.1ms | ActiveRecord: 0.8ms (10 queries, 0 cached) | GC: 6.9ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+Started GET "/leads" for 127.0.0.1 at 2026-01-13 12:48:05 -0800
+Processing by LeadsController#index as HTML
+Filter chain halted as :authenticate_request rendered or redirected
+Completed 401 Unauthorized in 0ms (Views: 0.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "email", "name", "password_digest", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["created_at", "2026-01-13 20:48:05.230766"], ["email", "[FILTERED]"], ["name", "Test User"], ["password_digest", "[FILTERED]"], ["updated_at", "2026-01-13 20:48:05.230766"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/leads" for 127.0.0.1 at 2026-01-13 12:48:05 -0800
+Processing by LeadsController#create as HTML
+  Parameters: {"name"=>"Test Lead", "email"=>"[FILTERED]", "status"=>"new"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mLead Create (0.4ms)[0m  [1m[32mINSERT INTO "leads" ("company", "created_at", "email", "estimated_value", "name", "notes", "phone", "status", "updated_at", "user_id", "website") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["company", nil], ["created_at", "2026-01-13 20:48:05.238211"], ["email", "[FILTERED]"], ["estimated_value", nil], ["name", "Test Lead"], ["notes", nil], ["phone", nil], ["status", "new"], ["updated_at", "2026-01-13 20:48:05.238211"], ["user_id", 1], ["website", nil]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTag Load (0.1ms)[0m  [1m[34mSELECT "tags".* FROM "tags" INNER JOIN "lead_tags" ON "tags"."id" = "lead_tags"."tag_id" WHERE "lead_tags"."lead_id" = ?[0m  [["lead_id", 1]]
+  [1m[36mInteraction Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "interactions" WHERE "interactions"."lead_id" = ?[0m  [["lead_id", 1]]
+  [1m[36mInteraction Load (0.0ms)[0m  [1m[34mSELECT "interactions".* FROM "interactions" WHERE "interactions"."lead_id" = ? ORDER BY "interactions"."interaction_date" DESC LIMIT ?[0m  [["lead_id", 1], ["LIMIT", 1]]
+Completed 201 Created in 10ms (Views: 0.1ms | ActiveRecord: 1.0ms (5 queries, 0 cached) | GC: 0.6ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "email", "name", "password_digest", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["created_at", "2026-01-13 20:48:05.248259"], ["email", "[FILTERED]"], ["name", "Test User"], ["password_digest", "[FILTERED]"], ["updated_at", "2026-01-13 20:48:05.248259"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mLead Create (0.1ms)[0m  [1m[32mINSERT INTO "leads" ("company", "created_at", "email", "estimated_value", "name", "notes", "phone", "status", "updated_at", "user_id", "website") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["company", "Acme Corp"], ["created_at", "2026-01-13 20:48:05.248793"], ["email", "[FILTERED]"], ["estimated_value", 5000.0], ["name", "Lead 4"], ["notes", "Some notes"], ["phone", "555-1234"], ["status", "new"], ["updated_at", "2026-01-13 20:48:05.248793"], ["user_id", 1], ["website", "https://example.com"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Started GET "/leads/1" for 127.0.0.1 at 2026-01-13 12:48:05 -0800
+Processing by LeadsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mLead Load (0.1ms)[0m  [1m[34mSELECT "leads".* FROM "leads" WHERE "leads"."user_id" = ? AND "leads"."id" = ? LIMIT ?[0m  [["user_id", 1], ["id", 1], ["LIMIT", 1]]
+  [1m[36mTag Load (0.0ms)[0m  [1m[34mSELECT "tags".* FROM "tags" INNER JOIN "lead_tags" ON "tags"."id" = "lead_tags"."tag_id" WHERE "lead_tags"."lead_id" = ?[0m  [["lead_id", 1]]
+  [1m[36mInteraction Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "interactions" WHERE "interactions"."lead_id" = ?[0m  [["lead_id", 1]]
+  [1m[36mInteraction Load (0.0ms)[0m  [1m[34mSELECT "interactions".* FROM "interactions" WHERE "interactions"."lead_id" = ? ORDER BY "interactions"."interaction_date" DESC LIMIT ?[0m  [["lead_id", 1], ["LIMIT", 1]]
+  [1m[36mInteraction Load (0.0ms)[0m  [1m[34mSELECT "interactions".* FROM "interactions" WHERE "interactions"."lead_id" = ? ORDER BY "interactions"."interaction_date" DESC[0m  [["lead_id", 1]]
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."lead_id" = ?[0m  [["lead_id", 1]]
+Completed 200 OK in 6ms (Views: 0.1ms | ActiveRecord: 0.8ms (7 queries, 0 cached) | GC: 0.2ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "email", "name", "password_digest", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["created_at", "2026-01-13 20:48:05.258733"], ["email", "[FILTERED]"], ["name", "Test User"], ["password_digest", "[FILTERED]"], ["updated_at", "2026-01-13 20:48:05.258733"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mLead Create (0.2ms)[0m  [1m[32mINSERT INTO "leads" ("company", "created_at", "email", "estimated_value", "name", "notes", "phone", "status", "updated_at", "user_id", "website") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["company", "Acme Corp"], ["created_at", "2026-01-13 20:48:05.259436"], ["email", "[FILTERED]"], ["estimated_value", 5000.0], ["name", "Lead 5"], ["notes", "Some notes"], ["phone", "555-1234"], ["status", "new"], ["updated_at", "2026-01-13 20:48:05.259436"], ["user_id", 1], ["website", "https://example.com"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Started PATCH "/leads/1" for 127.0.0.1 at 2026-01-13 12:48:05 -0800
+Processing by LeadsController#update as HTML
+  Parameters: {"name"=>"Updated Lead", "id"=>"1"}
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mLead Load (0.2ms)[0m  [1m[34mSELECT "leads".* FROM "leads" WHERE "leads"."user_id" = ? AND "leads"."id" = ? LIMIT ?[0m  [["user_id", 1], ["id", 1], ["LIMIT", 1]]
+[31mUnpermitted parameter: :id. Context: { controller: LeadsController, action: update, request: #<ActionDispatch::Request:0x000000010c07f500>, params: {"name"=>"Updated Lead", "controller"=>"leads", "action"=>"update", "id"=>"1"} }[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mLead Update (0.2ms)[0m  [1m[33mUPDATE "leads" SET "name" = ?, "updated_at" = ? WHERE "leads"."id" = ?[0m  [["name", "Updated Lead"], ["updated_at", "2026-01-13 20:48:05.262732"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTag Load (0.0ms)[0m  [1m[34mSELECT "tags".* FROM "tags" INNER JOIN "lead_tags" ON "tags"."id" = "lead_tags"."tag_id" WHERE "lead_tags"."lead_id" = ?[0m  [["lead_id", 1]]
+  [1m[36mInteraction Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "interactions" WHERE "interactions"."lead_id" = ?[0m  [["lead_id", 1]]
+  [1m[36mInteraction Load (0.0ms)[0m  [1m[34mSELECT "interactions".* FROM "interactions" WHERE "interactions"."lead_id" = ? ORDER BY "interactions"."interaction_date" DESC LIMIT ?[0m  [["lead_id", 1], ["LIMIT", 1]]
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 0.6ms (6 queries, 0 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "email", "name", "password_digest", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["created_at", "2026-01-13 20:48:05.268558"], ["email", "[FILTERED]"], ["name", "Test User"], ["password_digest", "[FILTERED]"], ["updated_at", "2026-01-13 20:48:05.268558"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mLead Create (0.4ms)[0m  [1m[32mINSERT INTO "leads" ("company", "created_at", "email", "estimated_value", "name", "notes", "phone", "status", "updated_at", "user_id", "website") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["company", "Acme Corp"], ["created_at", "2026-01-13 20:48:05.269161"], ["email", "[FILTERED]"], ["estimated_value", 5000.0], ["name", "Lead 6"], ["notes", "Some notes"], ["phone", "555-1234"], ["status", "new"], ["updated_at", "2026-01-13 20:48:05.269161"], ["user_id", 1], ["website", "https://example.com"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mLead Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "leads"[0m
+Started DELETE "/leads/1" for 127.0.0.1 at 2026-01-13 12:48:05 -0800
+Processing by LeadsController#destroy as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mLead Load (0.0ms)[0m  [1m[34mSELECT "leads".* FROM "leads" WHERE "leads"."user_id" = ? AND "leads"."id" = ? LIMIT ?[0m  [["user_id", 1], ["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mInteraction Load (0.1ms)[0m  [1m[34mSELECT "interactions".* FROM "interactions" WHERE "interactions"."lead_id" = ?[0m  [["lead_id", 1]]
+  [1m[36mTask Load (0.0ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."lead_id" = ?[0m  [["lead_id", 1]]
+  [1m[36mLeadTag Load (0.0ms)[0m  [1m[34mSELECT "lead_tags".* FROM "lead_tags" WHERE "lead_tags"."lead_id" = ?[0m  [["lead_id", 1]]
+  [1m[36mLead Destroy (0.0ms)[0m  [1m[31mDELETE FROM "leads" WHERE "leads"."id" = ?[0m  [["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 204 No Content in 2ms (ActiveRecord: 0.3ms (6 queries, 0 cached) | GC: 0.1ms)
+  [1m[36mLead Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "leads"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "email", "name", "password_digest", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["created_at", "2026-01-13 20:48:05.277780"], ["email", "[FILTERED]"], ["name", "Test User"], ["password_digest", "[FILTERED]"], ["updated_at", "2026-01-13 20:48:05.277780"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mLead Create (0.2ms)[0m  [1m[32mINSERT INTO "leads" ("company", "created_at", "email", "estimated_value", "name", "notes", "phone", "status", "updated_at", "user_id", "website") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["company", "Acme Corp"], ["created_at", "2026-01-13 20:48:05.279885"], ["email", "[FILTERED]"], ["estimated_value", 5000.0], ["name", "Lead 7"], ["notes", "Some notes"], ["phone", "555-1234"], ["status", "new"], ["updated_at", "2026-01-13 20:48:05.279885"], ["user_id", 1], ["website", "https://example.com"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mLead Create (0.2ms)[0m  [1m[32mINSERT INTO "leads" ("company", "created_at", "email", "estimated_value", "name", "notes", "phone", "status", "updated_at", "user_id", "website") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["company", "Acme Corp"], ["created_at", "2026-01-13 20:48:05.281706"], ["email", "[FILTERED]"], ["estimated_value", 5000.0], ["name", "Lead 8"], ["notes", "Some notes"], ["phone", "555-1234"], ["status", "contacted"], ["updated_at", "2026-01-13 20:48:05.281706"], ["user_id", 1], ["website", "https://example.com"]]
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Started GET "/leads/kanban" for 127.0.0.1 at 2026-01-13 12:48:05 -0800
+Processing by LeadsController#kanban as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mLead Load (0.1ms)[0m  [1m[34mSELECT "leads".* FROM "leads" WHERE "leads"."user_id" = ? AND "leads"."status" = ?[0m  [["user_id", 1], ["status", "new"]]
+  [1m[36mLeadTag Load (0.0ms)[0m  [1m[34mSELECT "lead_tags".* FROM "lead_tags" WHERE "lead_tags"."lead_id" = ?[0m  [["lead_id", 1]]
+  [1m[36mInteraction Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "interactions" WHERE "interactions"."lead_id" = ?[0m  [["lead_id", 1]]
+  [1m[36mInteraction Load (0.1ms)[0m  [1m[34mSELECT "interactions".* FROM "interactions" WHERE "interactions"."lead_id" = ? ORDER BY "interactions"."interaction_date" DESC LIMIT ?[0m  [["lead_id", 1], ["LIMIT", 1]]
+  [1m[36mLead Load (0.1ms)[0m  [1m[34mSELECT "leads".* FROM "leads" WHERE "leads"."user_id" = ? AND "leads"."status" = ?[0m  [["user_id", 1], ["status", "contacted"]]
+  [1m[36mLeadTag Load (0.0ms)[0m  [1m[34mSELECT "lead_tags".* FROM "lead_tags" WHERE "lead_tags"."lead_id" = ?[0m  [["lead_id", 2]]
+  [1m[36mInteraction Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "interactions" WHERE "interactions"."lead_id" = ?[0m  [["lead_id", 2]]
+  [1m[36mInteraction Load (0.1ms)[0m  [1m[34mSELECT "interactions".* FROM "interactions" WHERE "interactions"."lead_id" = ? ORDER BY "interactions"."interaction_date" DESC LIMIT ?[0m  [["lead_id", 2], ["LIMIT", 1]]
+  [1m[36mLead Load (0.0ms)[0m  [1m[34mSELECT "leads".* FROM "leads" WHERE "leads"."user_id" = ? AND "leads"."status" = ?[0m  [["user_id", 1], ["status", "qualified"]]
+  [1m[36mLead Load (0.1ms)[0m  [1m[34mSELECT "leads".* FROM "leads" WHERE "leads"."user_id" = ? AND "leads"."status" = ?[0m  [["user_id", 1], ["status", "proposal"]]
+  [1m[36mLead Load (0.0ms)[0m  [1m[34mSELECT "leads".* FROM "leads" WHERE "leads"."user_id" = ? AND "leads"."status" = ?[0m  [["user_id", 1], ["status", "negotiation"]]
+  [1m[36mLead Load (0.0ms)[0m  [1m[34mSELECT "leads".* FROM "leads" WHERE "leads"."user_id" = ? AND "leads"."status" = ?[0m  [["user_id", 1], ["status", "won"]]
+  [1m[36mLead Load (0.0ms)[0m  [1m[34mSELECT "leads".* FROM "leads" WHERE "leads"."user_id" = ? AND "leads"."status" = ?[0m  [["user_id", 1], ["status", "lost"]]
+Completed 200 OK in 33ms (Views: 0.1ms | ActiveRecord: 0.9ms (14 queries, 0 cached) | GC: 14.2ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "email", "name", "password_digest", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["created_at", "2026-01-13 20:48:05.331453"], ["email", "[FILTERED]"], ["name", "Test User"], ["password_digest", "[FILTERED]"], ["updated_at", "2026-01-13 20:48:05.331453"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mLead Create (0.4ms)[0m  [1m[32mINSERT INTO "leads" ("company", "created_at", "email", "estimated_value", "name", "notes", "phone", "status", "updated_at", "user_id", "website") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["company", "Acme Corp"], ["created_at", "2026-01-13 20:48:05.334059"], ["email", "[FILTERED]"], ["estimated_value", 5000.0], ["name", "Lead 9"], ["notes", "Some notes"], ["phone", "555-1234"], ["status", "new"], ["updated_at", "2026-01-13 20:48:05.334059"], ["user_id", 1], ["website", "https://example.com"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Started PATCH "/leads/1/status" for 127.0.0.1 at 2026-01-13 12:48:05 -0800
+Processing by LeadsController#update_status as HTML
+  Parameters: {"status"=>"contacted", "id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mLead Load (0.0ms)[0m  [1m[34mSELECT "leads".* FROM "leads" WHERE "leads"."user_id" = ? AND "leads"."id" = ? LIMIT ?[0m  [["user_id", 1], ["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mLead Update (0.1ms)[0m  [1m[33mUPDATE "leads" SET "status" = ?, "updated_at" = ? WHERE "leads"."id" = ?[0m  [["status", "contacted"], ["updated_at", "2026-01-13 20:48:05.337261"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTag Load (0.0ms)[0m  [1m[34mSELECT "tags".* FROM "tags" INNER JOIN "lead_tags" ON "tags"."id" = "lead_tags"."tag_id" WHERE "lead_tags"."lead_id" = ?[0m  [["lead_id", 1]]
+  [1m[36mInteraction Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "interactions" WHERE "interactions"."lead_id" = ?[0m  [["lead_id", 1]]
+  [1m[36mInteraction Load (0.0ms)[0m  [1m[34mSELECT "interactions".* FROM "interactions" WHERE "interactions"."lead_id" = ? ORDER BY "interactions"."interaction_date" DESC LIMIT ?[0m  [["lead_id", 1], ["LIMIT", 1]]
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.3ms (6 queries, 0 cached) | GC: 0.4ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
