@@ -1,24 +1,57 @@
-# README
+# Freelance CRM
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A lightweight CRM for freelancers to manage leads, track interactions, and organize tasks. Built with Rails 8 API + React 19 frontend.
 
-Things you may want to cover:
+## Features
 
-* Ruby version
+- **Lead Pipeline** - Track prospects through stages: New > Contacted > Qualified > Proposal > Negotiation > Won/Lost
+- **Kanban Board** - Drag-and-drop leads between pipeline stages
+- **Interaction Logging** - Record emails, calls, meetings, and notes per lead
+- **Task Management** - Create tasks with priorities and due dates, linked to specific leads
+- **Tagging System** - Custom color-coded tags for lead categorization
+- **Dashboard** - Overview stats for pipeline health and activity
 
-* System dependencies
+## Tech Stack
 
-* Configuration
+**Backend:** Ruby on Rails 8.1, SQLite, Puma, JWT Auth, Solid Queue/Cache/Cable
 
-* Database creation
+**Frontend:** React 19, Vite 7, Tailwind CSS 4, React Router 6, Axios
 
-* Database initialization
+**Testing:** RSpec, FactoryBot
 
-* How to run the test suite
+## API Endpoints
 
-* Services (job queues, cache servers, search engines, etc.)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/auth/register` | Create account |
+| POST | `/auth/login` | Get JWT token |
+| GET | `/dashboard/stats` | Pipeline overview |
+| GET | `/leads/kanban` | Kanban board data |
+| PATCH | `/leads/:id/status` | Move lead between stages |
+| CRUD | `/leads` | Full lead management |
+| CRUD | `/leads/:id/interactions` | Log interactions |
+| CRUD | `/tasks` | Task management |
+| CRUD | `/tags` | Tag management |
 
-* Deployment instructions
+## Setup
 
-* ...
+```bash
+# Backend
+cd /path/to/freelance-crm
+bundle install
+rails db:create db:migrate
+rails server -p 3001
+
+# Frontend
+cd frontend
+npm install
+npm run dev
+```
+
+## Deploy
+
+Backend deploys to Render (free tier), frontend to Vercel. See `render.yaml` for configuration.
+
+## License
+
+MIT
